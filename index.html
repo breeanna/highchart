@@ -8,7 +8,7 @@
         <script>
 
 
-            $.getJSON("http://cooper-union-search-proxy.herokuapp.com/twitter/search/here?count=100",function(response){
+            $.getJSON("http://cooper-union-search-proxy.herokuapp.com/twitter/search/here?count=50",function(response){
                 
                 for (var i=0; i<response.statuses.length; i++)  {
                     
@@ -28,14 +28,17 @@
 
 
                     // w  h  e  r  e
-                    var where = response.statuses[i].user.time_zone;
+                    var where = response.statuses[i].user.utc_offset;
 
-                    var whereValue =[];
+                    var whereValue = [];
                     // console.log(where)
 
                     whereValue.push(where);
-                }
-            });
+
+                    if (where = null){
+                        whereValue.pop(where);
+                    }
+                    console.log(whereValue);
 
             $(function () {
     $('#container').highcharts({
@@ -50,33 +53,28 @@
             text: 'from twitter',
         },
         xAxis: {
+            // allowDecimals: false,
             title: {
-                enabled: true,
-                text: 'When',
+                // enabled: true,
+                text: 'Where',
+                x:-10
             },
             labels: {
-                format: 'datetime',
+
+                format: '{value}',
             }, 
+            startOnTick:true,
             endOnTick: true,
             showLastLabel: true,
         },
         yAxis: {
             title: {
-                text: 'Where',
+                text: 'When',
+                y:0
             },
             labels:{
-                format: 'datetime',
+                format: '{value}',
             }
-        },
-        legend: {
-            layout: 'vertical',
-            align: 'left',
-            verticalAlign: 'top',
-            x: 100,
-            y: 70,
-            floating: true,
-            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
-            borderWidth: 1
         },
         plotOptions: {
             scatter: {
@@ -109,6 +107,8 @@
         }]
     });
 });
+                }
+            });
 
 </script>
         <style>
